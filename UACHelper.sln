@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UACHelper", "UACHelper\UACHelper.csproj", "{1F406FE0-66F1-477A-AA44-95D0DA4F605D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UACHelper.Sample", "UACHelper.Sample\UACHelper.Sample.csproj", "{A62385F9-8311-40CD-A4DD-2FD7375D4EAD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1F406FE0-66F1-477A-AA44-95D0DA4F605D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F406FE0-66F1-477A-AA44-95D0DA4F605D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F406FE0-66F1-477A-AA44-95D0DA4F605D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F406FE0-66F1-477A-AA44-95D0DA4F605D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A62385F9-8311-40CD-A4DD-2FD7375D4EAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A62385F9-8311-40CD-A4DD-2FD7375D4EAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A62385F9-8311-40CD-A4DD-2FD7375D4EAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A62385F9-8311-40CD-A4DD-2FD7375D4EAD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
