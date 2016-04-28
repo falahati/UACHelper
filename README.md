@@ -59,6 +59,7 @@ This static class contains multiple methods to add the UAC shield icon to the bu
 
 ## EXAMPLES
 Check the 'UACHelper.Sample' for tons of examples on how to use the library.
+![Screenshot](/screenshot.jpg?raw=true "Screenshot")
 
 * Restart the current program in Elevated Mode:
 ```C#
