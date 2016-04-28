@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>UACHelper</id>
-        <version>1.0</version>
+        <version>0.0</version>
         <title>UACHelper(Win XP+)</title>
         <authors>Soroush Falahati</authors>
         <licenseUrl>https://github.com/falahati/UACHelper/blob/master/LICENSE</licenseUrl>
