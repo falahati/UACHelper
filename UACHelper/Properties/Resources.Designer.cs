@@ -131,5 +131,14 @@ namespace UACHelper.Properties {
                 return ResourceManager.GetString("Error_Unknown", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Address can not be empty..
+        /// </summary>
+        internal static string ExecutableTask_Address_Error {
+            get {
+                return ResourceManager.GetString("ExecutableTask_Address_Error", resourceCulture);
+            }
+        }
     }
 }

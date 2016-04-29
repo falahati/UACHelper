@@ -5,6 +5,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Threading;
+using Microsoft.Win32.TaskScheduler;
 using UACHelper.Helpers;
 using UACHelper.Native.Enums;
 using UACHelper.Native.Methods;
@@ -356,6 +357,49 @@ namespace UACHelper
             }
         }
 
+        /// <summary>
+        ///     Starts a new process with the task info provided and with the limited access rights
+        /// </summary>
+        /// <param name="task">Contains the information about the process to be started</param>
+        /// <exception cref="NotSupportedException">This method is only supported on Windows Vista+</exception>
+        public static void StartLimitedTask(ExecutableTask task)
+        {
+            if (!IsElevated)
+            {
+                Process.Start(new ProcessStartInfo(task.Address, task.Arguments)
+                {
+                    WorkingDirectory = task.WorkingDirectory
+                });
+            }
+
+            if (!IsUACSupported)
+            {
+                throw new NotSupportedException();
+            }
+
+            bool? success;
+            using (var taskService = new TaskService())
+            {
+                var name = "UACHelper.TemporaryTask.{" + Guid.NewGuid() + "}";
+                using (var newTask = taskService.NewTask())
+                {
+                    newTask.Actions.Add(new ExecAction(task.Address, task.Arguments, task.WorkingDirectory));
+                    newTask.Principal.DisplayName = DesktopOwner.Value;
+                    newTask.Principal.UserId = DesktopOwner.Translate(typeof (SecurityIdentifier)).Value;
+                    newTask.Settings.ExecutionTimeLimit = TimeSpan.Zero;
+                    var runningTask =
+                        taskService.RootFolder.RegisterTaskDefinition(name, newTask)
+                            .RunEx(TaskRunFlags.IgnoreConstraints, 0, string.Empty);
+                    Thread.Sleep(1000);
+                    success = runningTask?.State == TaskState.Running;
+                }
+                taskService.RootFolder.DeleteTask(name, false);
+            }
+            if (success != true)
+            {
+                throw new InvalidOperationException(Resources.Error_StartLimitedFailed);
+            }
+        }
 
         /// <summary>
         ///     Starts a new <see cref="Process" /> with the start info provided and with the limited access rights

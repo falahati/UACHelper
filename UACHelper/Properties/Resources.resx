@@ -122,4 +122,7 @@
   <data name="Error_StartElevatedFailed_CustomVerbs" xml:space="preserve">
     <value>Custom verbs are not supported for starting an elevated process.</value>
   </data>
+  <data name="ExecutableTask_Address_Error" xml:space="preserve">
+    <value>Address can not be empty.</value>
+  </data>
 </root>
