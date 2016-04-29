@@ -91,7 +91,7 @@ namespace UACHelper
                 {
                     return true;
                 }
-                if (IsVirtualized)
+                if (IsUACSupported && IsVirtualized)
                 {
                     return true;
                 }
