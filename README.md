@@ -27,6 +27,7 @@ This static class contains properties about the current state of the application
 * `UACHelper.GetExpectedRunlevel()`: Checks a file and retrieve the expected `RunLevel` for it to start
 * `UACHelper.StartElevated()`: Starts a new elevated `Process` with the start info provided
 * `UACHelper.StartLimited()`: Starts a new `Process` with the start info provided and with the limited access rights
+* `UACHelper.StartLimitedTask()`: Starts a new process with the task info provided and with the limited access rights using TaskScheduler service
 * `UACHelper.StartWithShell()`: Starts a new `Process` with the start info provided and with the same rights as the current active shell process
 * `UACHelper.StartAndCopyProcessPermission()`: Starts a new `Process` with the start info provided and with the same rights as the mentioned `Process`
 
