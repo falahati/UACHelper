@@ -4,6 +4,9 @@ A helper class library to detect, manage and use UAC functionalities in your pro
 ## WHERE TO FIND
 This library is available as a NuGet package at [nuget.org](https://www.nuget.org/packages/UACHelper/).
 
+## Donation
+[<img width="24" height="24" src="http://icons.iconarchive.com/icons/sonya/swarm/256/Coffee-icon.png"/>**Every coffee counts! :)**](https://www.coinpayments.net/index.php?cmd=_donate&reset=1&merchant=820707aded07845511b841f9c4c335cd&item_name=Donate&currency=USD&amountf=10.00000000&allow_amount=1&want_shipping=0&allow_extra=1)
+
 ## HOW TO USE
 Currently there are three main classes in this library:
 
