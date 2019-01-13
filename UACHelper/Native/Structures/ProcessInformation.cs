@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using UACHelper.Helpers;
 
 namespace UACHelper.Native.Structures
 {
