@@ -13,46 +13,50 @@ namespace UACHelper.Helpers
     {
         public static SafeNativeHandle DuplicatePrimaryToken(Process process)
         {
-            SafeNativeHandle processToken;
             if (
                 !AdvancedAPI.OpenProcessToken(process.Handle, TokenAccessLevels.Duplicate | TokenAccessLevels.Query,
-                    out processToken))
+                    out var processToken))
             {
                 throw new Win32Exception();
             }
+
             using (processToken)
             {
-                var tokenRights = TokenAccessLevels.Query | TokenAccessLevels.AssignPrimary |
-                                  TokenAccessLevels.Duplicate | TokenAccessLevels.AdjustDefault |
+                var tokenRights = TokenAccessLevels.Query |
+                                  TokenAccessLevels.AssignPrimary |
+                                  TokenAccessLevels.Duplicate |
+                                  TokenAccessLevels.AdjustDefault |
                                   TokenAccessLevels.AdjustSessionId;
-                SafeNativeHandle token;
+
                 if (
                     !AdvancedAPI.DuplicateTokenEx(processToken, tokenRights, IntPtr.Zero,
-                        TokenImpersonationLevel.Impersonation, TokenType.TokenPrimary, out token))
+                        TokenImpersonationLevel.Impersonation, TokenType.TokenPrimary, out var token))
                 {
                     throw new Win32Exception();
                 }
+
                 return token;
             }
         }
 
+        // ReSharper disable once FlagArgument
         public static void EnablePrivilegeOnProcess(Process process, SecurityEntities privilege)
         {
-            SafeNativeHandle processToken;
             if (!AdvancedAPI.OpenProcessToken(process.Handle, TokenAccessLevels.AdjustPrivileges,
-                out processToken))
+                out var processToken))
             {
                 throw new Win32Exception();
             }
+
             using (processToken)
             {
-                LUID luid;
-                if (!AdvancedAPI.LookupPrivilegeValue(null, privilege.ToString(), out luid))
+                if (!AdvancedAPI.LookupPrivilegeValue(null, privilege.ToString(), out var luid))
                 {
                     throw new Win32Exception();
                 }
 
                 var tkp = new TokenPrivileges(PrivilegeAttributes.Enabled, luid);
+
                 if (
                     !AdvancedAPI.AdjustTokenPrivileges(processToken, false, ref tkp, (uint) Marshal.SizeOf(tkp),
                         IntPtr.Zero, IntPtr.Zero) ||
@@ -66,18 +70,22 @@ namespace UACHelper.Helpers
         public static TokenElevationType GetTokenElevationType(IntPtr token)
         {
             var elevationTypeLength = Marshal.SizeOf(typeof(int));
-            var elevationType = (TokenElevationType)0;
+            var elevationType = (TokenElevationType) 0;
+
             if (!AdvancedAPI.GetTokenInformation(token,
                 TokenInformationClass.TokenElevationType,
                 ref elevationType, elevationTypeLength, out elevationTypeLength))
             {
                 var exception = new Win32Exception();
+
                 if (exception.NativeErrorCode == 87) // ERROR_INVALID_PARAMETER
                 {
                     throw new NotSupportedException();
                 }
+
                 throw exception;
             }
+
             return elevationType;
         }
     }

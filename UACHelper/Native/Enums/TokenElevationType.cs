@@ -4,6 +4,6 @@
     {
         Default = 1,
         Full = 2,
-        Limited = 3,
+        Limited = 3
     }
 }

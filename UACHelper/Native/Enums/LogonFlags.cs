@@ -7,6 +7,6 @@ namespace UACHelper.Native.Enums
     {
         None = 0,
         LogonWithProfile = 1,
-        LogonNetCredentialsOnly = 2,
+        LogonNetCredentialsOnly = 2
     }
 }

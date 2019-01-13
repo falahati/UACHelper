@@ -11,9 +11,11 @@ namespace UACHelper
             {
                 throw new ArgumentException(Resources.ExecutableTask_Address_Error, nameof(address));
             }
+
             Address = address;
             Arguments = arguments;
             WorkingDirectory = workingDirectory;
+
             if (string.IsNullOrWhiteSpace(WorkingDirectory))
             {
                 WorkingDirectory = Environment.CurrentDirectory;
@@ -28,8 +30,8 @@ namespace UACHelper
         {
         }
 
-        public string Address { get; private set; }
-        public string Arguments { get; private set; }
+        public string Address { get; }
+        public string Arguments { get; }
         public string WorkingDirectory { get; }
     }
 }

@@ -19,7 +19,7 @@ namespace UACHelper.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -120,6 +120,15 @@ namespace UACHelper.Properties {
         internal static string Error_StartWithUsername {
             get {
                 return ResourceManager.GetString("Error_StartWithUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This method is not supported in current environment..
+        /// </summary>
+        internal static string Error_This_method_is_not_supported_in_current_environment {
+            get {
+                return ResourceManager.GetString("Error_This_method_is_not_supported_in_current_environment", resourceCulture);
             }
         }
         

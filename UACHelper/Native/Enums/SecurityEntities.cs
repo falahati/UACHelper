@@ -1,4 +1,6 @@
-﻿namespace UACHelper.Native.Enums
+﻿// ReSharper disable IdentifierTypo
+
+namespace UACHelper.Native.Enums
 {
     internal enum SecurityEntities
     {
@@ -36,6 +38,6 @@
         SeIncWorkingSetPrivilege,
         SeRelabelPrivilege,
         SeTimeZonePrivilege,
-        SeTrustedCredmanAccessPrivilege
+        SeTrustedCredManAccessPrivilege
     }
 }

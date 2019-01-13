@@ -10,12 +10,14 @@ namespace UACHelper.Sample
             try
             {
                 job();
+
                 return true;
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.ToString(), @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
             return false;
         }
 

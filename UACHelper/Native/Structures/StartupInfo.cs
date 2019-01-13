@@ -6,28 +6,31 @@ namespace UACHelper.Native.Structures
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     internal struct StartupInfo
     {
-        public uint cb;
-        public string lpReserved;
-        public string lpDesktop;
-        public string lpTitle;
-        public uint dwX;
-        public uint dwY;
-        public uint dwXSize;
-        public uint dwYSize;
-        public uint dwXCountChars;
-        public uint dwYCountChars;
-        public uint dwFillAttribute;
-        public uint dwFlags;
-        public ushort wShowWindow;
-        public ushort cbReserved2;
-        public IntPtr lpReserved2;
-        public IntPtr hStdInput;
-        public IntPtr hStdOutput;
-        public IntPtr hStdError;
+        public uint Size;
+        public string Reserved;
+        public string Desktop;
+        public string Title;
+        public uint X;
+        public uint Y;
+        public uint Width;
+        public uint Height;
+        public uint HorizontalCharsCount;
+        public uint VerticalCharsCount;
+        public uint FillAttribute;
+        public uint Flags;
+        public ushort ShowWindow;
+        public ushort Reserved2;
+        public IntPtr Reserved3;
+        public IntPtr StdInput;
+        public IntPtr StdOutput;
+        public IntPtr StdError;
 
         public static StartupInfo GetOne()
         {
-            return new StartupInfo {cb = (uint) Marshal.SizeOf(typeof (StartupInfo))};
+            return new StartupInfo
+            {
+                Size = (uint) Marshal.SizeOf(typeof(StartupInfo))
+            };
         }
     }
 }

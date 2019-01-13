@@ -21,15 +21,15 @@ namespace UACHelper.Helpers
             SetHandle(handle);
         }
 
+        public static bool CloseHandle(IntPtr handle)
+        {
+            return Kernel.CloseHandle(handle);
+        }
+
         [SecurityCritical]
         protected override bool ReleaseHandle()
         {
             return CloseHandle(handle);
-        }
-
-        public static bool CloseHandle(IntPtr handle)
-        {
-            return Kernel.CloseHandle(handle);
         }
     }
 }

@@ -10,31 +10,62 @@ namespace UACHelper
         private const string RegistryAddress = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System";
 
         /// <summary>
-        ///     Enables the "administrator in Admin Approval Mode" user type while also enabling all other User Account
-        ///     Control (UAC) policies. Requires restart.
+        ///     AAM behaviors regarding administrators' changes to system
         /// </summary>
-        public static bool IsEnable
+        public static AdminPromptType AdminPromptBehavior
         {
             get
             {
                 if (!UACHelper.IsUACSupported)
                 {
-                    return false;
+                    return AdminPromptType.AllowAll;
                 }
+
                 using (var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64))
                 using (var key = baseKey.OpenSubKey(RegistryAddress, false))
                 {
-                    return ((key?.GetValue("EnableLUA", 0) as int?) ?? 0) > 0;
+                    var value = AdminPromptType.DimmedPromptForNonWindowsBinaries;
+                    value =
+                        (AdminPromptType)
+                        (key?.GetValue("ConsentPromptBehaviorAdmin", value) as int? ?? (int) value);
+
+                    if (ForceDimPromptScreen)
+                    {
+                        if (value == AdminPromptType.Prompt)
+                        {
+                            return AdminPromptType.DimmedPrompt;
+                        }
+
+                        if (value == AdminPromptType.PromptWithPasswordConfirmation)
+                        {
+                            return AdminPromptType.DimmedPromptWithPasswordConfirmation;
+                        }
+                    }
+
+                    return value;
                 }
             }
             set
             {
-                if (value != IsEnable)
+                if (value != AdminPromptBehavior)
                 {
                     using (var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64))
                     using (var key = baseKey.OpenSubKey(RegistryAddress, true))
                     {
-                        key?.SetValue("EnableLUA", value ? 1 : 0);
+                        if (ForceDimPromptScreen)
+                        {
+                            if (value == AdminPromptType.Prompt)
+                            {
+                                value = AdminPromptType.DimmedPrompt;
+                            }
+
+                            if (value == AdminPromptType.PromptWithPasswordConfirmation)
+                            {
+                                value = AdminPromptType.DimmedPromptWithPasswordConfirmation;
+                            }
+                        }
+
+                        key?.SetValue("ConsentPromptBehaviorAdmin", (int) value);
                     }
                 }
             }
@@ -51,10 +82,11 @@ namespace UACHelper
                 {
                     return false;
                 }
+
                 using (var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64))
                 using (var key = baseKey.OpenSubKey(RegistryAddress, false))
                 {
-                    return ((key?.GetValue("ValidateAdminCodeSignatures", 0) as int?) ?? 0) > 0;
+                    return (key?.GetValue("ValidateAdminCodeSignatures", 0) as int? ?? 0) > 0;
                 }
             }
             set
@@ -81,10 +113,11 @@ namespace UACHelper
                 {
                     return false;
                 }
+
                 using (var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64))
                 using (var key = baseKey.OpenSubKey(RegistryAddress, false))
                 {
-                    return ((key?.GetValue("PromptOnSecureDesktop", 0) as int?) ?? 0) > 0;
+                    return (key?.GetValue("PromptOnSecureDesktop", 0) as int? ?? 0) > 0;
                 }
             }
             set
@@ -95,6 +128,70 @@ namespace UACHelper
                     using (var key = baseKey.OpenSubKey(RegistryAddress, true))
                     {
                         key?.SetValue("PromptOnSecureDesktop", value ? 1 : 0);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        ///     Enables the "administrator in Admin Approval Mode" user type while also enabling all other User Account
+        ///     Control (UAC) policies. Requires restart.
+        /// </summary>
+        public static bool IsEnable
+        {
+            get
+            {
+                if (!UACHelper.IsUACSupported)
+                {
+                    return false;
+                }
+
+                using (var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64))
+                using (var key = baseKey.OpenSubKey(RegistryAddress, false))
+                {
+                    return (key?.GetValue("EnableLUA", 0) as int? ?? 0) > 0;
+                }
+            }
+            set
+            {
+                if (value != IsEnable)
+                {
+                    using (var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64))
+                    using (var key = baseKey.OpenSubKey(RegistryAddress, true))
+                    {
+                        key?.SetValue("EnableLUA", value ? 1 : 0);
+                    }
+                }
+            }
+        }
+
+
+        /// <summary>
+        ///     Used to heuristically detect applications that require an elevation of privilege to install.
+        /// </summary>
+        public static bool IsInstallerDetectionEnable
+        {
+            get
+            {
+                if (!UACHelper.IsUACSupported)
+                {
+                    return false;
+                }
+
+                using (var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64))
+                using (var key = baseKey.OpenSubKey(RegistryAddress, false))
+                {
+                    return (key?.GetValue("EnableInstallerDetection", 0) as int? ?? 0) > 0;
+                }
+            }
+            set
+            {
+                if (value != IsInstallerDetectionEnable)
+                {
+                    using (var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64))
+                    using (var key = baseKey.OpenSubKey(RegistryAddress, true))
+                    {
+                        key?.SetValue("EnableInstallerDetection", value ? 1 : 0);
                     }
                 }
             }
@@ -113,10 +210,11 @@ namespace UACHelper
                 {
                     return false;
                 }
+
                 using (var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64))
                 using (var key = baseKey.OpenSubKey(RegistryAddress, false))
                 {
-                    return ((key?.GetValue("EnableVirtualization", 0) as int?) ?? 0) > 0;
+                    return (key?.GetValue("EnableVirtualization", 0) as int? ?? 0) > 0;
                 }
             }
             set
@@ -127,37 +225,6 @@ namespace UACHelper
                     using (var key = baseKey.OpenSubKey(RegistryAddress, true))
                     {
                         key?.SetValue("EnableVirtualization", value ? 1 : 0);
-                    }
-                }
-            }
-        }
-
-
-        /// <summary>
-        ///     Used to heuristically detect applications that require an elevation of privilege to install.
-        /// </summary>
-        public static bool IsInstallerDetectionEnable
-        {
-            get
-            {
-                if (!UACHelper.IsUACSupported)
-                {
-                    return false;
-                }
-                using (var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64))
-                using (var key = baseKey.OpenSubKey(RegistryAddress, false))
-                {
-                    return ((key?.GetValue("EnableInstallerDetection", 0) as int?) ?? 0) > 0;
-                }
-            }
-            set
-            {
-                if (value != IsInstallerDetectionEnable)
-                {
-                    using (var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64))
-                    using (var key = baseKey.OpenSubKey(RegistryAddress, true))
-                    {
-                        key?.SetValue("EnableInstallerDetection", value ? 1 : 0);
                     }
                 }
             }
@@ -174,12 +241,14 @@ namespace UACHelper
                 {
                     return UserPromptType.Prompt;
                 }
+
                 using (var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64))
                 using (var key = baseKey.OpenSubKey(RegistryAddress, false))
                 {
                     var defValue = (int) UserPromptType.RejectAll;
+
                     return
-                        (UserPromptType) ((key?.GetValue("ConsentPromptBehaviorUser", defValue) as int?) ?? defValue);
+                        (UserPromptType) (key?.GetValue("ConsentPromptBehaviorUser", defValue) as int? ?? defValue);
                 }
             }
             set
@@ -190,62 +259,6 @@ namespace UACHelper
                     using (var key = baseKey.OpenSubKey(RegistryAddress, true))
                     {
                         key?.SetValue("ConsentPromptBehaviorUser", (int) value);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        ///     AAM behaviors regarding administrators' changes to system
-        /// </summary>
-        public static AdminPromptType AdminPromptBehavior
-        {
-            get
-            {
-                if (!UACHelper.IsUACSupported)
-                {
-                    return AdminPromptType.AllowAll;
-                }
-                using (var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64))
-                using (var key = baseKey.OpenSubKey(RegistryAddress, false))
-                {
-                    var value = AdminPromptType.DimmedPromptForNonWindowsBinaries;
-                    value =
-                        (AdminPromptType)
-                            ((key?.GetValue("ConsentPromptBehaviorAdmin", value) as int?) ?? (int) value);
-                    if (ForceDimPromptScreen)
-                    {
-                        if (value == AdminPromptType.Prompt)
-                        {
-                            return AdminPromptType.DimmedPrompt;
-                        }
-                        if (value == AdminPromptType.PromptWithPasswordConfirmation)
-                        {
-                            return AdminPromptType.DimmedPromptWithPasswordConfirmation;
-                        }
-                    }
-                    return value;
-                }
-            }
-            set
-            {
-                if (value != AdminPromptBehavior)
-                {
-                    using (var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64))
-                    using (var key = baseKey.OpenSubKey(RegistryAddress, true))
-                    {
-                        if (ForceDimPromptScreen)
-                        {
-                            if (value == AdminPromptType.Prompt)
-                            {
-                                value = AdminPromptType.DimmedPrompt;
-                            }
-                            if (value == AdminPromptType.PromptWithPasswordConfirmation)
-                            {
-                                value = AdminPromptType.DimmedPromptWithPasswordConfirmation;
-                            }
-                        }
-                        key?.SetValue("ConsentPromptBehaviorAdmin", (int) value);
                     }
                 }
             }

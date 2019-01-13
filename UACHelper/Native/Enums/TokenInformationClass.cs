@@ -7,7 +7,7 @@
         TokenPrivileges = 3,
         TokenOwner = 4,
         TokenPrimaryGroup = 5,
-        TokenDefaultDacl = 6,
+        TokenDefaultDACL = 6,
         TokenSource = 7,
         TokenType = 8,
         TokenImpersonationLevel = 9,
@@ -40,6 +40,6 @@
         TokenRestrictedDeviceClaimAttributes = 36,
         TokenDeviceGroups = 37,
         TokenRestrictedDeviceGroups = 38,
-        MaxTokenInfoClass = 39,
+        MaxTokenInfoClass = 39
     }
 }

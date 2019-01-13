@@ -125,4 +125,7 @@
   <data name="ExecutableTask_Address_Error" xml:space="preserve">
     <value>Address can not be empty.</value>
   </data>
+  <data name="Error_This_method_is_not_supported_in_current_environment" xml:space="preserve">
+    <value>This method is not supported in current environment.</value>
+  </data>
 </root>
