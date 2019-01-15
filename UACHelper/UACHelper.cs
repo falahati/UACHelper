@@ -7,10 +7,12 @@ using System.Security.Principal;
 using System.Threading;
 using Microsoft.Win32.TaskScheduler;
 using UACHelper.Helpers;
+using UACHelper.Native.ComInterop;
 using UACHelper.Native.Enums;
 using UACHelper.Native.Methods;
 using UACHelper.Native.Structures;
 using UACHelper.Properties;
+using IServiceProvider = UACHelper.Native.ComInterop.IServiceProvider;
 
 namespace UACHelper
 {
@@ -441,6 +443,125 @@ namespace UACHelper
             }
         }
 
+        /// <summary>
+        ///     Starts a new <see cref="Process" /> with the start info provided directly by Windows Explorer (Usually as limited)
+        /// </summary>
+        /// <param name="startInfo">Contains the information about the <see cref="Process" /> to be started</param>
+        /// <exception cref="NotSupportedException">This operation is not available in this environment.</exception>
+        /// <exception cref="InvalidOperationException">Failed to start application.</exception>
+        public static void StartByShell(ShellStartInfo startInfo)
+        {
+            var emptyObject = new object();
+            object shellWindows = null;
+            object desktopWindow = null;
+            object desktopBrowser = null;
+            object desktopView = null;
+            object backgroundFolderView = null;
+            object applicationDispatch = null;
+
+            var shellWindowsType = Type.GetTypeFromCLSID(ComClassId.ShellWindowsServer, false);
+
+            if (shellWindowsType == null)
+            {
+                throw new NotSupportedException("This operation is not available in this environment.");
+            }
+
+            try
+            {
+                shellWindows = Activator.CreateInstance(shellWindowsType);
+
+                desktopWindow = ((IShellWindows) shellWindows).FindWindowSW(
+                    ref emptyObject,
+                    ref emptyObject,
+                    ShellWindowsClass.Desktop,
+                    out var _,
+                    ShellWindowsFindOptions.NeedDispatch
+                );
+
+                ((IServiceProvider) desktopWindow).QueryService(
+                    ServiceProviderServiceId.TopLevelBrowser,
+                    typeof(IShellBrowser).GUID,
+                    out desktopBrowser
+                );
+
+                ((IShellBrowser) desktopBrowser).QueryActiveShellView(out desktopView);
+
+                ((IShellView) desktopView).GetItemObject(
+                    ShellViewGetItemObject.Background,
+                    typeof(IDispatch).GUID,
+                    out backgroundFolderView
+                );
+
+                applicationDispatch = ((IShellFolderViewDual) backgroundFolderView).Application;
+
+                var showFlags = new object();
+
+                switch (startInfo.WindowStyle)
+                {
+                    case ProcessWindowStyle.Normal:
+                        showFlags = ShellDispatchExecuteShowFlags.Normal;
+
+                        break;
+                    case ProcessWindowStyle.Hidden:
+                        showFlags = ShellDispatchExecuteShowFlags.Hidden;
+
+                        break;
+                    case ProcessWindowStyle.Minimized:
+                        showFlags = ShellDispatchExecuteShowFlags.Minimized;
+
+                        break;
+                    case ProcessWindowStyle.Maximized:
+                        showFlags = ShellDispatchExecuteShowFlags.Maximized;
+
+                        break;
+                }
+
+                ((IShellDispatch2) applicationDispatch).ShellExecute(
+                    startInfo.Address,
+                    startInfo.Arguments,
+                    startInfo.WorkingDirectory,
+                    startInfo.Verb ?? emptyObject,
+                    showFlags
+                );
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException("Failed to start application.", e);
+            }
+            finally
+            {
+                if (applicationDispatch != null)
+                {
+                    Marshal.ReleaseComObject(applicationDispatch);
+                }
+
+                if (backgroundFolderView != null)
+                {
+                    Marshal.ReleaseComObject(backgroundFolderView);
+                }
+
+                if (desktopView != null)
+                {
+                    Marshal.ReleaseComObject(desktopView);
+                }
+
+                if (desktopBrowser != null)
+                {
+                    Marshal.ReleaseComObject(desktopBrowser);
+                }
+
+                if (desktopWindow != null)
+                {
+                    Marshal.ReleaseComObject(desktopWindow);
+                }
+
+                if (shellWindows != null)
+                {
+                    Marshal.ReleaseComObject(shellWindows);
+                }
+            }
+        }
+
 
         /// <summary>
         ///     Starts a new elevated <see cref="Process" /> with the start info provided
@@ -535,15 +656,15 @@ namespace UACHelper
         /// <summary>
         ///     Starts a new process with the task info provided and with the limited access rights
         /// </summary>
-        /// <param name="task">Contains the information about the process to be started</param>
+        /// <param name="taskStartInfo">Contains the information about the process to be started</param>
         /// <exception cref="NotSupportedException">This method is only supported on Windows Vista+</exception>
-        public static void StartLimitedTask(ExecutableTask task)
+        public static void StartLimitedTask(TaskStartInfo taskStartInfo)
         {
             if (!IsElevated)
             {
-                Process.Start(new ProcessStartInfo(task.Address, task.Arguments)
+                Process.Start(new ProcessStartInfo(taskStartInfo.Address, taskStartInfo.Arguments)
                 {
-                    WorkingDirectory = task.WorkingDirectory
+                    WorkingDirectory = taskStartInfo.WorkingDirectory
                 });
             }
 
@@ -560,7 +681,8 @@ namespace UACHelper
 
                 using (var newTask = taskService.NewTask())
                 {
-                    newTask.Actions.Add(new ExecAction(task.Address, task.Arguments, task.WorkingDirectory));
+                    newTask.Actions.Add(new ExecAction(taskStartInfo.Address, taskStartInfo.Arguments,
+                        taskStartInfo.WorkingDirectory));
                     newTask.Principal.DisplayName = DesktopOwner.Value;
                     newTask.Principal.UserId = DesktopOwner.Translate(typeof(SecurityIdentifier)).Value;
                     newTask.Settings.ExecutionTimeLimit = TimeSpan.Zero;

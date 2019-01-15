@@ -144,9 +144,9 @@ namespace UACHelper.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Address can not be empty..
         /// </summary>
-        internal static string ExecutableTask_Address_Error {
+        internal static string StartInfo_Address_Error {
             get {
-                return ResourceManager.GetString("ExecutableTask_Address_Error", resourceCulture);
+                return ResourceManager.GetString("StartInfo_Address_Error", resourceCulture);
             }
         }
     }

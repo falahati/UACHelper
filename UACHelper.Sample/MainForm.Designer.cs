@@ -73,6 +73,8 @@
             this.btn_openFileDialog = new System.Windows.Forms.Button();
             this.btn_colorBox = new System.Windows.Forms.Button();
             this.btn_messageBox = new System.Windows.Forms.Button();
+            this.btn_restartWithShell = new System.Windows.Forms.Button();
+            this.btn_restartByShell = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.tb_uacLevel)).BeginInit();
             this.gb_information.SuspendLayout();
             this.gb_status.SuspendLayout();
@@ -145,7 +147,7 @@
             // 
             this.btn_restartElevated.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btn_restartElevated.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.btn_restartElevated.Location = new System.Drawing.Point(17, 78);
+            this.btn_restartElevated.Location = new System.Drawing.Point(17, 70);
             this.btn_restartElevated.Name = "btn_restartElevated";
             this.btn_restartElevated.Size = new System.Drawing.Size(131, 23);
             this.btn_restartElevated.TabIndex = 10;
@@ -156,7 +158,7 @@
             // btn_restartNormal
             // 
             this.btn_restartNormal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btn_restartNormal.Location = new System.Drawing.Point(155, 78);
+            this.btn_restartNormal.Location = new System.Drawing.Point(155, 70);
             this.btn_restartNormal.Name = "btn_restartNormal";
             this.btn_restartNormal.Size = new System.Drawing.Size(131, 23);
             this.btn_restartNormal.TabIndex = 11;
@@ -305,7 +307,7 @@
             this.lb_processes.FormattingEnabled = true;
             this.lb_processes.Location = new System.Drawing.Point(6, 26);
             this.lb_processes.Name = "lb_processes";
-            this.lb_processes.Size = new System.Drawing.Size(291, 277);
+            this.lb_processes.Size = new System.Drawing.Size(291, 251);
             this.lb_processes.TabIndex = 24;
             // 
             // btn_refresh
@@ -318,7 +320,7 @@
             this.btn_refresh.TabIndex = 26;
             this.btn_refresh.Text = "Refresh";
             this.btn_refresh.UseVisualStyleBackColor = true;
-            this.btn_refresh.Click += new System.EventHandler(ProcessRefresh);
+            this.btn_refresh.Click += new System.EventHandler(this.ProcessRefresh);
             // 
             // lbl_uacSupported
             // 
@@ -402,6 +404,8 @@
             // 
             // gb_status
             // 
+            this.gb_status.Controls.Add(this.btn_restartByShell);
+            this.gb_status.Controls.Add(this.btn_restartWithShell);
             this.gb_status.Controls.Add(this.label7);
             this.gb_status.Controls.Add(this.lbl_isElevated);
             this.gb_status.Controls.Add(this.lbl_behavior);
@@ -410,7 +414,7 @@
             this.gb_status.Controls.Add(this.btn_restartNormal);
             this.gb_status.Location = new System.Drawing.Point(321, 12);
             this.gb_status.Name = "gb_status";
-            this.gb_status.Size = new System.Drawing.Size(303, 108);
+            this.gb_status.Size = new System.Drawing.Size(303, 128);
             this.gb_status.TabIndex = 41;
             this.gb_status.TabStop = false;
             this.gb_status.Text = "Current Status";
@@ -423,7 +427,7 @@
             this.gb_uac.Controls.Add(this.lbl_uacSupported);
             this.gb_uac.Controls.Add(this.btn_disable);
             this.gb_uac.Controls.Add(this.btn_enable);
-            this.gb_uac.Location = new System.Drawing.Point(321, 126);
+            this.gb_uac.Location = new System.Drawing.Point(321, 146);
             this.gb_uac.Name = "gb_uac";
             this.gb_uac.Size = new System.Drawing.Size(303, 108);
             this.gb_uac.TabIndex = 42;
@@ -452,9 +456,9 @@
             // 
             this.gb_processes.Controls.Add(this.lb_processes);
             this.gb_processes.Controls.Add(this.btn_refresh);
-            this.gb_processes.Location = new System.Drawing.Point(321, 240);
+            this.gb_processes.Location = new System.Drawing.Point(321, 260);
             this.gb_processes.Name = "gb_processes";
-            this.gb_processes.Size = new System.Drawing.Size(303, 310);
+            this.gb_processes.Size = new System.Drawing.Size(303, 290);
             this.gb_processes.TabIndex = 44;
             this.gb_processes.TabStop = false;
             this.gb_processes.Text = "Elevated Proceses";
@@ -545,6 +549,30 @@
             this.btn_messageBox.UseVisualStyleBackColor = true;
             this.btn_messageBox.Click += new System.EventHandler(this.ShowGoodies);
             // 
+            // btn_restartWithShell
+            // 
+            this.btn_restartWithShell.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btn_restartWithShell.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.btn_restartWithShell.Location = new System.Drawing.Point(17, 99);
+            this.btn_restartWithShell.Name = "btn_restartWithShell";
+            this.btn_restartWithShell.Size = new System.Drawing.Size(131, 23);
+            this.btn_restartWithShell.TabIndex = 12;
+            this.btn_restartWithShell.Text = "Restart with Shell";
+            this.btn_restartWithShell.UseVisualStyleBackColor = true;
+            this.btn_restartWithShell.Click += new System.EventHandler(this.btn_restartWithShell_Click);
+            // 
+            // btn_restartByShell
+            // 
+            this.btn_restartByShell.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btn_restartByShell.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.btn_restartByShell.Location = new System.Drawing.Point(155, 99);
+            this.btn_restartByShell.Name = "btn_restartByShell";
+            this.btn_restartByShell.Size = new System.Drawing.Size(131, 23);
+            this.btn_restartByShell.TabIndex = 13;
+            this.btn_restartByShell.Text = "Restart by Shell";
+            this.btn_restartByShell.UseVisualStyleBackColor = true;
+            this.btn_restartByShell.Click += new System.EventHandler(this.btn_restartByShell_Click);
+            // 
             // MainForm
             // 
             this.AcceptButton = this.btn_exit;
@@ -629,6 +657,8 @@
         private System.Windows.Forms.Button btn_folderDialog;
         private System.Windows.Forms.Button btn_fontDialog;
         private System.Windows.Forms.Button btn_customDialog;
+        private System.Windows.Forms.Button btn_restartByShell;
+        private System.Windows.Forms.Button btn_restartWithShell;
     }
 }
 

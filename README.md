@@ -32,6 +32,7 @@ This static class contains properties about the current state of the application
 * `UACHelper.StartLimited()`: Starts a new `Process` with the start info provided and with the limited access rights
 * `UACHelper.StartLimitedTask()`: Starts a new process with the task info provided and with the limited access rights using TaskScheduler service
 * `UACHelper.StartWithShell()`: Starts a new `Process` with the start info provided and with the same rights as the current active shell process
+* `UACHelper.StartByShell()`: Starts a new `Process` with the start info provided using the current shell desktop `IShellDispatch2.ShellExecute()` method.
 * `UACHelper.StartAndCopyProcessPermission()`: Starts a new `Process` with the start info provided and with the same rights as the mentioned `Process`
 
 
@@ -79,7 +80,6 @@ UACHelper.StartLimited(
 
 ## TO-DO
 * Create an elevated Out-Of-Process COM object from a limited process - Read More: [The COM Elevation Moniker](https://msdn.microsoft.com/en-us/ms679687.aspx)
-* Using `IShellDispatch2.ShellExecute()` to start a process with current shell privileges - Read More: [Execute In Explorer Sample](https://msdn.microsoft.com/library/dd940355)
 
 ## LICENSE
 The MIT License (MIT)

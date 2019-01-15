@@ -64,6 +64,8 @@ namespace UACHelper.Sample
             btn_enable.Enabled = UACHelper.IsElevated && UACHelper.IsUACSupported && !AAMSettings.IsEnable;
 
             btn_restartNormal.Enabled = UACHelper.IsElevated;
+            btn_restartWithShell.Enabled = UACHelper.IsElevated;
+            btn_restartByShell.Enabled = UACHelper.IsElevated;
             btn_restartElevated.Enabled = !UACHelper.IsElevated;
 
             btn_restartElevated.ShieldifyButton();
@@ -246,6 +248,26 @@ namespace UACHelper.Sample
 
             MessageBox.Show(string.Format(Resources.MainForm_ShowGoodies_Result_Message, result),
                 Resources.MainForm_ShowGoodies_Result_Caption, MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void btn_restartWithShell_Click(object sender, EventArgs e)
+        {
+            if (
+                Helper.ExecuteAndReport(
+                    () => UACHelper.StartWithShell(new ProcessStartInfo(Assembly.GetExecutingAssembly().Location))))
+            {
+                Application.Exit();
+            }
+        }
+
+        private void btn_restartByShell_Click(object sender, EventArgs e)
+        {
+            if (
+                Helper.ExecuteAndReport(
+                    () => UACHelper.StartByShell(new ShellStartInfo(Assembly.GetExecutingAssembly().Location))))
+            {
+                Application.Exit();
+            }
         }
     }
 }
