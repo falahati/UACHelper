@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net4</TargetFrameworks>
-    <Version>1.2.0.3</Version>
+    <Version>1.2.0.4</Version>
     <Company>Soroush Falahati (falahati.net)</Company>
     <Description>
       UACHelper is a helper class library to detect, manage and use UAC functionalities (Supporting WinXP+)
