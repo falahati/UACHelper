@@ -1,13 +1,23 @@
 # UAC Helper Class Library
 A helper class library to detect, manage and use UAC functionalities in your program
 
-## WHERE TO FIND
+## How to get
+[![](https://img.shields.io/nuget/dt/UACHelper.svg?style=flat-square)](https://www.nuget.org/packages/UACHelper)
+[![](https://img.shields.io/nuget/v/UACHelper.svg?style=flat-square)](https://www.nuget.org/packages/UACHelper)
+
 This library is available as a NuGet package at [nuget.org](https://www.nuget.org/packages/UACHelper/).
 
-## Donation
-[<img width="24" height="24" src="http://icons.iconarchive.com/icons/sonya/swarm/256/Coffee-icon.png"/>**Every coffee counts! :)**](https://www.coinpayments.net/index.php?cmd=_donate&reset=1&merchant=820707aded07845511b841f9c4c335cd&item_name=Donate&currency=USD&amountf=10.00000000&allow_amount=1&want_shipping=0&allow_extra=1)
+## Help me fund my own Death Star
 
-## HOW TO USE
+[![](https://img.shields.io/badge/crypto-CoinPayments-8a00a3.svg?style=flat-square)](https://www.coinpayments.net/index.php?cmd=_donate&reset=1&merchant=820707aded07845511b841f9c4c335cd&item_name=Donate&currency=USD&amountf=20.00000000&allow_amount=1&want_shipping=0&allow_extra=1)
+[![](https://img.shields.io/badge/shetab-ZarinPal-8a00a3.svg?style=flat-square)](https://zarinp.al/@falahati)
+[![](https://img.shields.io/badge/usd-Paypal-8a00a3.svg?style=flat-square)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=ramin.graphix@gmail.com&lc=US&item_name=Donate&no_note=0&cn=&curency_code=USD&bn=PP-DonationsBF:btn_donateCC_LG.gif:NonHosted)
+
+**--OR--**
+
+You can always donate your time by contributing to the project or by introducing it to others.
+
+## How to use
 Currently there are three main classes in this library:
 
 ### `UACHelper.UACHelper`
@@ -62,29 +72,31 @@ This static class contains multiple methods to add the UAC shield icon to the bu
 * `Form.ShowDialog`: Alias of `WinForm.ShieldifyForm`
 * `Form.ShieldifyButton`: Alias of `WinForm.ShieldifyButton`
 
-## EXAMPLES
+## Examples
 Check the 'UACHelper.Sample' for tons of examples on how to use the library.
 ![Screenshot](/screenshot.jpg?raw=true "Screenshot")
 
 * Restart the current program in Elevated Mode:
 ```C#
 UACHelper.StartElevated(
-    new ProcessStartInfo(Assembly.GetExecutingAssembly().Location));
+    new ProcessStartInfo(Assembly.GetExecutingAssembly().Location)
+);
 ```
 
 * Restart the current program in Limited Mode:
 ```C#
 UACHelper.StartLimited(
-    new ProcessStartInfo(Assembly.GetExecutingAssembly().Location));
+    new ProcessStartInfo(Assembly.GetExecutingAssembly().Location)
+);
 ```
 
-## TO-DO
+## To do
 * Create an elevated Out-Of-Process COM object from a limited process - Read More: [The COM Elevation Moniker](https://msdn.microsoft.com/en-us/ms679687.aspx)
 
-## LICENSE
+## License
 The MIT License (MIT)
 
-Copyright (c) 2019 Soroush
+Copyright (c) 2016-2020 Soroush
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
