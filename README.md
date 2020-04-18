@@ -1,4 +1,8 @@
 # UAC Helper Class Library
+[![](https://img.shields.io/github/license/falahati/UACHelper.svg?style=flat-square)](https://github.com/falahati/UACHelper/blob/master/LICENSE)
+[![](https://img.shields.io/github/commit-activity/y/falahati/UACHelper.svg?style=flat-square)](https://github.com/falahati/UACHelper/commits/master)
+[![](https://img.shields.io/github/issues/falahati/UACHelper.svg?style=flat-square)](https://github.com/falahati/UACHelper/issues)
+
 A helper class library to detect, manage and use UAC functionalities in your program
 
 ## How to get
